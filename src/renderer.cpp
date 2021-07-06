@@ -5,10 +5,8 @@
 Renderer::Renderer(const std::size_t _screen_width,
                    const std::size_t _screen_height,
                    const std::size_t grid_width, const std::size_t grid_height)
-    : _screen_width(_screen_width),
-      _screen_height(_screen_height),
-      _grid_width(grid_width),
-      _grid_height(grid_height) {
+    : _screen_width(_screen_width), _screen_height(_screen_height),
+      _grid_width(grid_width), _grid_height(grid_height) {
   // Initialize SDL
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     std::cerr << "SDL could not initialize.\n";
@@ -17,8 +15,8 @@ Renderer::Renderer(const std::size_t _screen_width,
 
   // Create Window
   _sdl_window = SDL_CreateWindow("Snake Game", SDL_WINDOWPOS_CENTERED,
-                                SDL_WINDOWPOS_CENTERED, _screen_width,
-                                _screen_height, SDL_WINDOW_SHOWN);
+                                 SDL_WINDOWPOS_CENTERED, _screen_width,
+                                 _screen_height, SDL_WINDOW_SHOWN);
 
   if (nullptr == _sdl_window) {
     std::cerr << "Window could not be created.\n";
@@ -39,7 +37,9 @@ Renderer::~Renderer() {
   SDL_Quit();
 }
 
-void Renderer::Render(std::unique_ptr<Snake> const &snake, SDL_Point const &food, std::vector<SDL_Point> const &fence) {
+void Renderer::Render(std::unique_ptr<Snake> const &snake,
+                      SDL_Point const &food,
+                      std::vector<SDL_Point> const &fence) {
   SDL_Rect block;
   block.w = _screen_width / _grid_width;
   block.h = _screen_height / _grid_height;
@@ -85,6 +85,7 @@ void Renderer::Render(std::unique_ptr<Snake> const &snake, SDL_Point const &food
 }
 
 void Renderer::UpdateWindowTitle(int score, int fps) {
-  std::string title{"Snake Score: " + std::to_string(score) + " FPS: " + std::to_string(fps)};
+  std::string title{"Snake Score: " + std::to_string(score) +
+                    " FPS: " + std::to_string(fps)};
   SDL_SetWindowTitle(_sdl_window, title.c_str());
 }

@@ -4,10 +4,10 @@
 #include "snake.h"
 
 class Controller {
- public:
+public:
   void HandleInput(Snake::GameState &state, Snake *snake) const;
 
- private:
+private:
   void ChangeDirection(Snake *snake, Snake::Direction input,
                        Snake::Direction opposite) const;
 };

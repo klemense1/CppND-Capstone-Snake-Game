@@ -1,10 +1,9 @@
 #include "game.h"
-#include <iostream>
 #include "SDL.h"
+#include <iostream>
 
 Game::Game(std::size_t grid_width, std::size_t grid_height)
-    : _snake(std::make_unique<Snake>(grid_width, grid_height)),
-      _engine(_dev()),
+    : _snake(std::make_unique<Snake>(grid_width, grid_height)), _engine(_dev()),
       _random_w(0, static_cast<int>(grid_width - 1)),
       _random_h(0, static_cast<int>(grid_height - 1)) {
   PlaceFood();
@@ -75,10 +74,10 @@ void Game::PlaceFence() {
   int x0 = _random_w(_engine);
   int y0 = _random_h(_engine);
   int x1, y1;
-  
+
   // TODO: should become more dificult with each level
   for (int i = 0; i < 2; ++i) {
-    if (i % 2 == 0) { 
+    if (i % 2 == 0) {
       x1 = _random_w(_engine);
       y1 = y0;
     } else {
@@ -87,10 +86,10 @@ void Game::PlaceFence() {
     }
     // Check that the location is not occupied by a snake item before placing
     // food.
-    for (int j = 0; j < std::max(x1 -x0, y1-y0); ++j) {
+    for (int j = 0; j < std::max(x1 - x0, y1 - y0); ++j) {
       SDL_Point pt;
-      pt.x = x0 + j / std::max(1,(x1 -x0));
-      pt.y = y0 + j / std::max(1,(y1 -y0));
+      pt.x = x0 + j / std::max(1, (x1 - x0));
+      pt.y = y0 + j / std::max(1, (y1 - y0));
       _fence.push_back(pt);
     }
   }
@@ -109,13 +108,13 @@ bool Game::CollidingWithFence() {
 }
 
 void Game::Update() {
-  if (!_snake->_alive) return;
+  if (!_snake->_alive)
+    return;
 
   if (CollidingWithFence() == true)
     return;
 
   _snake->Update();
-
 
   int new_x = static_cast<int>(_snake->_head_x);
   int new_y = static_cast<int>(_snake->_head_y);
