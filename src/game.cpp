@@ -2,10 +2,14 @@
 #include "SDL.h"
 #include <iostream>
 
-Game::Game(std::size_t grid_width, std::size_t grid_height)
-    : _snake(std::make_unique<Snake>(grid_width, grid_height)), _engine(_dev()),
+Game::Game(std::size_t grid_width, std::size_t grid_height,
+           std::size_t max_levels, std::size_t food_per_level)
+    : _snake(std::make_unique<Snake>(grid_width, grid_height)), _food(),
+      _cnt_level(1), _cnt_food(0), _max_levels(max_levels),
+      _food_per_level(food_per_level), _engine(_dev()),
       _random_w(0, static_cast<int>(grid_width - 1)),
       _random_h(0, static_cast<int>(grid_height - 1)) {
+  PlaceFence();
   PlaceFood();
 }
 
@@ -18,9 +22,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
   int frame_count = 0;
   Snake::GameState state = Snake::GameState::run;
 
-  PlaceFence();
-
-  while (state != Snake::GameState::end) {
+  while (state != Snake::GameState::end && _cnt_level < _max_levels) {
     frame_start = SDL_GetTicks();
 
     // Input, Update, Render - the main game loop.
@@ -38,7 +40,8 @@ void Game::Run(Controller const &controller, Renderer &renderer,
 
       // After every second, update the window title.
       if (frame_end - title_timestamp >= 1000) {
-        renderer.UpdateWindowTitle(_score, frame_count);
+        renderer.UpdateWindowTitle(_score, _cnt_level, _max_levels, _cnt_food,
+                                   _food_per_level, frame_count);
         frame_count = 0;
         title_timestamp = frame_end;
       }
@@ -63,6 +66,7 @@ void Game::PlaceFood() {
     if (!_snake->SnakeCell(x, y)) {
       _food.x = x;
       _food.y = y;
+      _cnt_food++;
       return;
     }
   }
@@ -70,7 +74,9 @@ void Game::PlaceFood() {
 
 void Game::PlaceFence() {
   // TODO: maybe do it in a class?
+  // TODO: check half space where snake is, and place fence in other half
   // fill _fence
+  _fence.clear();
   int x0 = _random_w(_engine);
   int y0 = _random_h(_engine);
   int x1, y1;
@@ -108,6 +114,10 @@ bool Game::CollidingWithFence() {
 }
 
 void Game::Update() {
+
+  if (_cnt_food == 0)
+    PlaceFence();
+
   if (!_snake->_alive)
     return;
 
@@ -122,7 +132,12 @@ void Game::Update() {
   // Check if there's food over here
   if (_food.x == new_x && _food.y == new_y) {
     _score++;
-    PlaceFood();
+    if (_cnt_food == _food_per_level) {
+      _cnt_level++;
+      _cnt_food = 0;
+    } else {
+      PlaceFood();
+    }
     // Grow snake and increase speed.
     _snake->GrowBody();
     _snake->_speed += 0.02;

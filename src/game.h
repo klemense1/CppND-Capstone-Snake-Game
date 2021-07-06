@@ -10,7 +10,8 @@
 
 class Game {
 public:
-  Game(std::size_t grid_width, std::size_t grid_height);
+  Game(std::size_t grid_width, std::size_t grid_height, std::size_t max_levels,
+       std::size_t food_per_level);
   void Run(Controller const &controller, Renderer &renderer,
            std::size_t target_frame_duration);
   int GetScore() const;
@@ -19,6 +20,10 @@ public:
 private:
   std::unique_ptr<Snake> _snake;
   SDL_Point _food;
+  int _cnt_level;
+  int _max_levels;
+  int _cnt_food;
+  const int _food_per_level;
   std::vector<SDL_Point> _fence;
 
   std::random_device _dev;

@@ -84,8 +84,12 @@ void Renderer::Render(std::unique_ptr<Snake> const &snake,
   SDL_RenderPresent(_sdl_renderer);
 }
 
-void Renderer::UpdateWindowTitle(int score, int fps) {
-  std::string title{"Snake Score: " + std::to_string(score) +
-                    " FPS: " + std::to_string(fps)};
+void Renderer::UpdateWindowTitle(int score, int cnt_level, int max_levels,
+                                 int cnt_food, int food_per_level, int fps) {
+  std::string title{
+      "Snake Score: " + std::to_string(score) +
+      " Level: " + std::to_string(cnt_level) + "/" +
+      std::to_string(max_levels) + " #Food: " + std::to_string(cnt_food) + "/" +
+      std::to_string(food_per_level) + " FPS: " + std::to_string(fps)};
   SDL_SetWindowTitle(_sdl_window, title.c_str());
 }

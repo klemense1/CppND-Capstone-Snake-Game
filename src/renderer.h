@@ -14,7 +14,8 @@ public:
 
   void Render(std::unique_ptr<Snake> const &snake, SDL_Point const &food,
               std::vector<SDL_Point> const &fence);
-  void UpdateWindowTitle(int score, int fps);
+  void UpdateWindowTitle(int score, int cnt_level, int max_levels, int cnt_food,
+                         int food_per_level, int fps);
 
 private:
   SDL_Window *_sdl_window;
