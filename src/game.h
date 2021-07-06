@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include <random>
+#include <memory>
 #include "SDL.h"
 #include "controller.h"
 #include "renderer.h"
@@ -16,7 +17,7 @@ class Game {
   int GetSize() const;
 
  private:
-  Snake _snake;
+  std::unique_ptr<Snake> _snake;
   SDL_Point _food;
   std::vector<SDL_Point> _fence;
 

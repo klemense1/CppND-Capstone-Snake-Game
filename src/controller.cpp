@@ -3,13 +3,13 @@
 #include "SDL.h"
 #include "snake.h"
 
-void Controller::ChangeDirection(Snake &snake, Snake::Direction input,
+void Controller::ChangeDirection(Snake *snake, Snake::Direction input,
                                  Snake::Direction opposite) const {
-  if (snake.direction != opposite || snake._size == 1) snake.direction = input;
+  if (snake->direction != opposite || snake->_size == 1) snake->direction = input;
   return;
 }
 
-void Controller::HandleInput(Snake::GameState &state, Snake &snake) const {
+void Controller::HandleInput(Snake::GameState &state, Snake *snake) const {
   SDL_Event e;
   while (SDL_PollEvent(&e)) {
     if (e.type == SDL_QUIT) {

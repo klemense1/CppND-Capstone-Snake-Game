@@ -5,10 +5,10 @@
 
 class Controller {
  public:
-  void HandleInput(Snake::GameState &state, Snake &snake) const;
+  void HandleInput(Snake::GameState &state, Snake *snake) const;
 
  private:
-  void ChangeDirection(Snake &snake, Snake::Direction input,
+  void ChangeDirection(Snake *snake, Snake::Direction input,
                        Snake::Direction opposite) const;
 };
 
