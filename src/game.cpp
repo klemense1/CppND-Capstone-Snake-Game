@@ -19,6 +19,8 @@ void Game::Run(Controller const &controller, Renderer &renderer,
   int frame_count = 0;
   Snake::GameState state = Snake::GameState::run;
 
+  PlaceFence();
+
   while (state != Snake::GameState::end) {
     frame_start = SDL_GetTicks();
 
@@ -26,7 +28,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     controller.HandleInput(state, _snake);
     if (state == Snake::GameState::run) {
       Update();
-      renderer.Render(_snake, _food);
+      renderer.Render(_snake, _food, _fence);
 
       frame_end = SDL_GetTicks();
 
@@ -70,12 +72,50 @@ void Game::PlaceFood() {
 void Game::PlaceFence() {
   // TODO: maybe do it in a class?
   // fill _fence
+  int x0 = _random_w(_engine);
+  int y0 = _random_h(_engine);
+  int x1, y1;
+  
+  // TODO: should become more dificult with each level
+  for (int i = 0; i < 2; ++i) {
+    if (i % 2 == 0) { 
+      x1 = _random_w(_engine);
+      y1 = y0;
+    } else {
+      x1 = x0;
+      y1 = _random_h(_engine);
+    }
+    // Check that the location is not occupied by a snake item before placing
+    // food.
+    for (int j = 0; j < std::max(x1 -x0, y1-y0); ++j) {
+      SDL_Point pt;
+      pt.x = x0 + j / std::max(1,(x1 -x0));
+      pt.y = y0 + j / std::max(1,(y1 -y0));
+      _fence.push_back(pt);
+    }
+  }
+}
+
+bool Game::CollidingWithFence() {
+  // Check if the snake has collided with fence.
+  for (auto const &item : _fence) {
+    // TODO: improve API to snake
+    // cast to int necessary, as position of snake is float
+    if (int(_snake._head_x) == item.x && int(_snake._head_y) == item.y) {
+      return true;
+    }
+  }
+  return false;
 }
 
 void Game::Update() {
-  if (!_snake.alive) return;
+  if (!_snake._alive) return;
+
+  if (CollidingWithFence() == true)
+    return;
 
   _snake.Update();
+
 
   int new_x = static_cast<int>(_snake._head_x);
   int new_y = static_cast<int>(_snake._head_y);
@@ -86,9 +126,9 @@ void Game::Update() {
     PlaceFood();
     // Grow snake and increase speed.
     _snake.GrowBody();
-    _snake.speed += 0.02;
+    _snake._speed += 0.02;
   }
 }
 
 int Game::GetScore() const { return _score; }
-int Game::GetSize() const { return _snake.size; }
+int Game::GetSize() const { return _snake._size; }

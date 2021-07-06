@@ -35,10 +35,11 @@ Renderer::Renderer(const std::size_t _screen_width,
 
 Renderer::~Renderer() {
   SDL_DestroyWindow(_sdl_window);
+  SDL_DestroyRenderer(_sdl_renderer);
   SDL_Quit();
 }
 
-void Renderer::Render(Snake const snake, SDL_Point const &food) {
+void Renderer::Render(Snake const snake, SDL_Point const &food, std::vector<SDL_Point> const &fence) {
   SDL_Rect block;
   block.w = _screen_width / _grid_width;
   block.h = _screen_height / _grid_height;
@@ -53,6 +54,14 @@ void Renderer::Render(Snake const snake, SDL_Point const &food) {
   block.y = food.y * block.h;
   SDL_RenderFillRect(_sdl_renderer, &block);
 
+  // Render fence
+  SDL_SetRenderDrawColor(_sdl_renderer, 0xFF, 0xFF, 0xFF, 0x00);
+  for (SDL_Point const &point : fence) {
+    block.x = point.x * block.w;
+    block.y = point.y * block.h;
+    SDL_RenderFillRect(_sdl_renderer, &block);
+  }
+
   // Render snake's body
   SDL_SetRenderDrawColor(_sdl_renderer, 0xFF, 0xFF, 0xFF, 0xFF);
   for (SDL_Point const &point : snake._body) {
@@ -64,7 +73,7 @@ void Renderer::Render(Snake const snake, SDL_Point const &food) {
   // Render snake's head
   block.x = static_cast<int>(snake._head_x) * block.w;
   block.y = static_cast<int>(snake._head_y) * block.h;
-  if (snake.alive) {
+  if (snake._alive) {
     SDL_SetRenderDrawColor(_sdl_renderer, 0x00, 0x7A, 0xCC, 0xFF);
   } else {
     SDL_SetRenderDrawColor(_sdl_renderer, 0xFF, 0x00, 0x00, 0xFF);

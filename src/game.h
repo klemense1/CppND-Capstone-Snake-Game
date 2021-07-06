@@ -29,6 +29,7 @@ class Game {
 
   void PlaceFood();
   void PlaceFence();
+  bool CollidingWithFence();
   void Update();
 };
 
