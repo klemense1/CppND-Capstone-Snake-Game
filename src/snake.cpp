@@ -22,19 +22,19 @@ void Snake::Update() {
 void Snake::UpdateHead() {
   switch (direction) {
     case Direction::kUp:
-      _head_y -= speed;
+      _head_y -= _speed;
       break;
 
     case Direction::kDown:
-      _head_y += speed;
+      _head_y += _speed;
       break;
 
     case Direction::kLeft:
-      _head_x -= speed;
+      _head_x -= _speed;
       break;
 
     case Direction::kRight:
-      _head_x += speed;
+      _head_x += _speed;
       break;
   }
 
@@ -52,13 +52,13 @@ void Snake::UpdateBody(SDL_Point &current_head_cell, SDL_Point &prev_head_cell) 
     _body.erase(_body.begin());
   } else {
     _growing = false;
-    size++;
+    _size++;
   }
 
   // Check if the snake has died.
   for (auto const &item : _body) {
     if (current_head_cell.x == item.x && current_head_cell.y == item.y) {
-      alive = false;
+      _alive = false;
     }
   }
 }

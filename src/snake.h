@@ -23,9 +23,9 @@ class Snake {
 
   Direction direction = Direction::kUp;
 
-  float speed{0.1f};
-  int size{1};
-  bool alive{true};
+  float _speed{0.1f};
+  int _size{1};
+  bool _alive{true};
   float _head_x;
   float _head_y;
   std::vector<SDL_Point> _body;
