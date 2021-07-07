@@ -145,4 +145,8 @@ void Game::Update() {
 }
 
 int Game::GetScore() const { return _score; }
-int Game::GetSize() const { return _snake->_size; }
+int Game::GetSnakeSize() const { return _snake->_size; }
+int Game::GetCntLevel() const { return _cnt_level; }
+int Game::GetMaxLevels() const { return _max_levels; }
+int Game::GetCntFood() const { return _cnt_food; }
+int Game::GetFoodPerLevel() const { return _food_per_level; }

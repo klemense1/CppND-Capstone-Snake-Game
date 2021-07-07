@@ -15,7 +15,11 @@ public:
   void Run(Controller const &controller, Renderer &renderer,
            std::size_t target_frame_duration);
   int GetScore() const;
-  int GetSize() const;
+  int GetSnakeSize() const;
+  int GetCntLevel() const;
+  int GetMaxLevels() const;
+  int GetCntFood() const;
+  int GetFoodPerLevel() const;
 
 private:
   std::unique_ptr<Snake> _snake;

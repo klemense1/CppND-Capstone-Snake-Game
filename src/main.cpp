@@ -17,8 +17,14 @@ int main() {
   Controller controller;
   Game game(kGridWidth, kGridHeight, maxLevels, foodPerLevel);
   game.Run(controller, renderer, kMsPerFrame);
-  std::cout << "Game has terminated successfully!\n";
+  if (game.GetCntLevel() < game.GetMaxLevels()) {
+    std::cout << "Game has terminated early!\n";
+  } else {
+    std::cout << "Game has terminated successfully!\n";
+  }
   std::cout << "Score: " << game.GetScore() << "\n";
-  std::cout << "Size: " << game.GetSize() << "\n";
+  std::cout << "Level: " << game.GetCntLevel() << "/" << game.GetMaxLevels()
+            << "\n";
+  std::cout << "Size: " << game.GetSnakeSize() << "\n";
   return 0;
 }
