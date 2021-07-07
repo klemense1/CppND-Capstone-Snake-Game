@@ -2,14 +2,14 @@
 #define RENDERER_H
 
 #include "SDL.h"
+#include "settings.h"
 #include "snake.h"
 #include <memory>
 #include <vector>
 
 class Renderer {
 public:
-  Renderer(const std::size_t _screen_width, const std::size_t _screen_height,
-           const std::size_t grid_width, const std::size_t grid_height);
+  Renderer(const Settings &settings);
   ~Renderer();
 
   void Render(std::unique_ptr<Snake> const &snake, SDL_Point const &food,

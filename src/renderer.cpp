@@ -2,11 +2,10 @@
 #include <iostream>
 #include <string>
 
-Renderer::Renderer(const std::size_t _screen_width,
-                   const std::size_t _screen_height,
-                   const std::size_t grid_width, const std::size_t grid_height)
-    : _screen_width(_screen_width), _screen_height(_screen_height),
-      _grid_width(grid_width), _grid_height(grid_height) {
+Renderer::Renderer(const Settings &settings)
+    : _screen_width(settings.kScreenWidth),
+      _screen_height(settings.kScreenHeight), _grid_width(settings.kGridWidth),
+      _grid_height(settings.kGridHeight) {
   // Initialize SDL
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     std::cerr << "SDL could not initialize.\n";

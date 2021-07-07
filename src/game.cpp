@@ -2,19 +2,17 @@
 #include "SDL.h"
 #include <iostream>
 
-Game::Game(std::size_t grid_width, std::size_t grid_height,
-           std::size_t max_levels, std::size_t food_per_level)
-    : _snake(std::make_unique<Snake>(grid_width, grid_height)), _food(),
-      _cnt_level(1), _cnt_food(0), _max_levels(max_levels),
-      _food_per_level(food_per_level), _engine(_dev()),
-      _random_w(0, static_cast<int>(grid_width - 1)),
-      _random_h(0, static_cast<int>(grid_height - 1)) {
+Game::Game(const Settings &settings)
+    : _snake(
+          std::make_unique<Snake>(settings.kGridWidth, settings.kGridHeight)),
+      _food(), _cnt_level(1), _cnt_food(0), _settings(settings),
+      _engine(_dev()), _random_w(0, static_cast<int>(settings.kGridWidth - 1)),
+      _random_h(0, static_cast<int>(settings.kGridHeight - 1)) {
   PlaceFence();
   PlaceFood();
 }
 
-void Game::Run(Controller const &controller, Renderer &renderer,
-               std::size_t target_frame_duration) {
+void Game::Run(Controller const &controller, Renderer &renderer) {
   Uint32 title_timestamp = SDL_GetTicks();
   Uint32 frame_start;
   Uint32 frame_end;
@@ -22,7 +20,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
   int frame_count = 0;
   Snake::GameState state = Snake::GameState::run;
 
-  while (state != Snake::GameState::end && _cnt_level < _max_levels) {
+  while (state != Snake::GameState::end && _cnt_level < _settings.maxLevels) {
     frame_start = SDL_GetTicks();
 
     // Input, Update, Render - the main game loop.
@@ -40,8 +38,9 @@ void Game::Run(Controller const &controller, Renderer &renderer,
 
       // After every second, update the window title.
       if (frame_end - title_timestamp >= 1000) {
-        renderer.UpdateWindowTitle(_score, _cnt_level, _max_levels, _cnt_food,
-                                   _food_per_level, frame_count);
+        renderer.UpdateWindowTitle(_score, _cnt_level, _settings.maxLevels,
+                                   _cnt_food, _settings.foodPerLevel,
+                                   frame_count);
         frame_count = 0;
         title_timestamp = frame_end;
       }
@@ -49,8 +48,8 @@ void Game::Run(Controller const &controller, Renderer &renderer,
       // If the time for this frame is too small (i.e. frame_duration is
       // smaller than the target ms_per_frame), delay the loop to
       // achieve the correct frame rate.
-      if (frame_duration < target_frame_duration) {
-        SDL_Delay(target_frame_duration - frame_duration);
+      if (frame_duration < _settings.kMsPerFrame) {
+        SDL_Delay(_settings.kMsPerFrame - frame_duration);
       }
     }
   }
@@ -132,7 +131,7 @@ void Game::Update() {
   // Check if there's food over here
   if (_food.x == new_x && _food.y == new_y) {
     _score++;
-    if (_cnt_food == _food_per_level) {
+    if (_cnt_food == _settings.foodPerLevel) {
       _cnt_level++;
       _cnt_food = 0;
     } else {
@@ -144,9 +143,12 @@ void Game::Update() {
   }
 }
 
+bool Game::ReachedGameEnding() const {
+  return (_cnt_level == _settings.maxLevels);
+}
 int Game::GetScore() const { return _score; }
 int Game::GetSnakeSize() const { return _snake->_size; }
 int Game::GetCntLevel() const { return _cnt_level; }
-int Game::GetMaxLevels() const { return _max_levels; }
+int Game::GetMaxLevels() const { return _settings.maxLevels; }
 int Game::GetCntFood() const { return _cnt_food; }
-int Game::GetFoodPerLevel() const { return _food_per_level; }
+int Game::GetFoodPerLevel() const { return _settings.foodPerLevel; }
