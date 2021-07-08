@@ -1,7 +1,7 @@
 #ifndef SNAKE_H
 #define SNAKE_H
 
-#include "SDL.h"
+#include "geometry.h"
 #include <vector>
 
 class Snake {
@@ -26,11 +26,12 @@ public:
   bool _alive{true};
   float _head_x;
   float _head_y;
-  std::vector<SDL_Point> _body;
+  std::vector<geometry::Point2dInt> _body;
 
 private:
   void UpdateHead();
-  void UpdateBody(SDL_Point &current_cell, SDL_Point &prev_cell);
+  void UpdateBody(geometry::Point2dInt &current_cell,
+                  geometry::Point2dInt &prev_cell);
 
   bool _growing{false};
   int _grid_width;

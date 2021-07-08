@@ -22,6 +22,6 @@ target_link_libraries(SnakeGame ${SDL2_LIBRARIES})
 add_subdirectory(thirdparty/googletest)
 
 # Add the testing executable
-add_executable(test test/utest_game.cpp src/settings.h src/game.cpp src/controller.cpp src/renderer.cpp src/snake.cpp)
+add_executable(test test/utest_game.cpp src/game.cpp src/controller.cpp src/renderer.cpp src/snake.cpp)
 
 target_link_libraries(test gtest_main ${SDL2_LIBRARIES})

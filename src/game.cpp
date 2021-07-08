@@ -2,6 +2,8 @@
 #include "SDL.h"
 #include <iostream>
 
+using geometry::Point2dInt;
+
 Game::Game(const param::Settings &settings)
     : _snake(
           std::make_unique<Snake>(settings.kGridWidth, settings.kGridHeight)),
@@ -92,7 +94,7 @@ void Game::PlaceFence() {
     // Check that the location is not occupied by a snake item before placing
     // food.
     for (int j = 0; j < std::max(x1 - x0, y1 - y0); ++j) {
-      SDL_Point pt;
+      Point2dInt pt;
       pt.x = x0 + j / std::max(1, (x1 - x0));
       pt.y = y0 + j / std::max(1, (y1 - y0));
       _fence.push_back(pt);
@@ -152,3 +154,15 @@ int Game::GetCntLevel() const { return _cnt_level; }
 int Game::GetMaxLevels() const { return _settings.maxLevels; }
 int Game::GetCntFood() const { return _cnt_food; }
 int Game::GetFoodPerLevel() const { return _settings.foodPerLevel; }
+
+std::ostream &operator<<(std::ostream &os, const Game &game) {
+  if (game.ReachedGameEnding()) {
+    os << "Game has terminated successfully!\n";
+  } else {
+    os << "Game has terminated early!\n";
+  }
+  os << "Score: " << game.GetScore() << "\nLevel: " << game.GetCntLevel()
+     << "/" << game.GetMaxLevels() << "\nSize: " << game.GetSnakeSize()
+     << "\n";
+  return os;
+}

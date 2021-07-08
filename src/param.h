@@ -1,5 +1,5 @@
-#ifndef PARAM_H
-#define PARAM_H
+#ifndef SETTINGS_H
+#define SETTINGS_H
 
 namespace param {
 struct Settings {

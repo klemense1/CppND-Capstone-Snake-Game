@@ -1,7 +1,7 @@
 #include "../src/controller.h"
 #include "../src/game.h"
 #include "../src/renderer.h"
-#include "../src/settings.h"
+#include "../src/param.h"
 #include "gtest/gtest.h"
 
 param::Settings SetupTestSettings() {

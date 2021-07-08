@@ -2,7 +2,8 @@
 #define RENDERER_H
 
 #include "SDL.h"
-#include "settings.h"
+#include "geometry.h"
+#include "param.h"
 #include "snake.h"
 #include <memory>
 #include <vector>
@@ -12,8 +13,9 @@ public:
   Renderer(const param::Settings &settings);
   ~Renderer();
 
-  void Render(std::unique_ptr<Snake> const &snake, SDL_Point const &food,
-              std::vector<SDL_Point> const &fence);
+  void Render(std::unique_ptr<Snake> const &snake,
+              geometry::Point2dInt const &food,
+              std::vector<geometry::Point2dInt> const &fence);
   void UpdateWindowTitle(int score, int cnt_level, int max_levels, int cnt_food,
                          int food_per_level, int fps);
 

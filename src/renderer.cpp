@@ -2,6 +2,8 @@
 #include <iostream>
 #include <string>
 
+using geometry::Point2dInt;
+
 Renderer::Renderer(const param::Settings &settings)
     : _screen_width(settings.kScreenWidth),
       _screen_height(settings.kScreenHeight), _grid_width(settings.kGridWidth),
@@ -37,8 +39,8 @@ Renderer::~Renderer() {
 }
 
 void Renderer::Render(std::unique_ptr<Snake> const &snake,
-                      SDL_Point const &food,
-                      std::vector<SDL_Point> const &fence) {
+                      Point2dInt const &food,
+                      std::vector<Point2dInt> const &fence) {
   SDL_Rect block;
   block.w = _screen_width / _grid_width;
   block.h = _screen_height / _grid_height;
@@ -55,7 +57,7 @@ void Renderer::Render(std::unique_ptr<Snake> const &snake,
 
   // Render fence
   SDL_SetRenderDrawColor(_sdl_renderer, 0xFF, 0xA0, 0xA0, 0xFF);
-  for (SDL_Point const &point : fence) {
+  for (Point2dInt const &point : fence) {
     block.x = point.x * block.w;
     block.y = point.y * block.h;
     SDL_RenderFillRect(_sdl_renderer, &block);
@@ -63,7 +65,7 @@ void Renderer::Render(std::unique_ptr<Snake> const &snake,
 
   // Render snake's body
   SDL_SetRenderDrawColor(_sdl_renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-  for (SDL_Point const &point : snake->_body) {
+  for (Point2dInt const &point : snake->_body) {
     block.x = point.x * block.w;
     block.y = point.y * block.h;
     SDL_RenderFillRect(_sdl_renderer, &block);

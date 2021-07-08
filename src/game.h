@@ -1,8 +1,8 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "SDL.h"
 #include "controller.h"
+#include "geometry.h"
 #include "renderer.h"
 #include "snake.h"
 #include <memory>
@@ -22,10 +22,11 @@ public:
 
 private:
   std::unique_ptr<Snake> _snake;
-  SDL_Point _food;
   int _cnt_level;
+  geometry::Point2dInt _food;
+
   int _cnt_food;
-  std::vector<SDL_Point> _fence;
+  std::vector<geometry::Point2dInt> _fence;
 
   std::random_device _dev;
   std::mt19937 _engine;
@@ -39,6 +40,7 @@ private:
   void PlaceFence();
   bool CollidingWithFence();
   void Update();
+  friend std::ostream & operator<<(std::ostream &os, const Game& g);
 };
 
 #endif

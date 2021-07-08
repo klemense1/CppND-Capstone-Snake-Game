@@ -1,7 +1,7 @@
 #include "controller.h"
 #include "game.h"
 #include "renderer.h"
-#include "settings.h"
+#include "param.h"
 #include <iostream>
 #include <memory>
 
@@ -20,14 +20,6 @@ int main() {
   std::unique_ptr<Controller> controller = std::make_unique<Controller>();
   std::unique_ptr<Game> game = std::make_unique<Game>(settings);
   game->Run(*controller, *renderer);
-  if (game->ReachedGameEnding()) {
-    std::cout << "Game has terminated successfully!\n";
-  } else {
-    std::cout << "Game has terminated early!\n";
-  }
-  std::cout << "Score: " << game->GetScore() << "\n";
-  std::cout << "Level: " << game->GetCntLevel() << "/" << game->GetMaxLevels()
-            << "\n";
-  std::cout << "Size: " << game->GetSnakeSize() << "\n";
+  std::cout << *game;
   return 0;
 }

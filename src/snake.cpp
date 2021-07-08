@@ -2,13 +2,15 @@
 #include <cmath>
 #include <iostream>
 
+using geometry::Point2dInt;
+
 void Snake::Update() {
-  SDL_Point prev_cell{
+  Point2dInt prev_cell{
       static_cast<int>(_head_x),
       static_cast<int>(
           _head_y)}; // We first capture the head's cell before updating.
   UpdateHead();
-  SDL_Point current_cell{
+  Point2dInt current_cell{
       static_cast<int>(_head_x),
       static_cast<int>(_head_y)}; // Capture the head's cell after updating.
 
@@ -43,8 +45,8 @@ void Snake::UpdateHead() {
   _head_y = fmod(_head_y + _grid_height, _grid_height);
 }
 
-void Snake::UpdateBody(SDL_Point &current_head_cell,
-                       SDL_Point &prev_head_cell) {
+void Snake::UpdateBody(Point2dInt &current_head_cell,
+                       Point2dInt &prev_head_cell) {
   // Add previous head location to vector
   _body.push_back(prev_head_cell);
 
