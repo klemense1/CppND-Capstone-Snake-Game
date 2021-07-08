@@ -6,7 +6,7 @@
 #include <memory>
 
 int main() {
-  Settings settings = Settings();
+  param::Settings settings = param::Settings();
   settings.kFramesPerSecond = 60;
   settings.kMsPerFrame = 1000 / settings.kFramesPerSecond;
   settings.kScreenWidth = 640 * 2;

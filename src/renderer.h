@@ -9,7 +9,7 @@
 
 class Renderer {
 public:
-  Renderer(const Settings &settings);
+  Renderer(const param::Settings &settings);
   ~Renderer();
 
   void Render(std::unique_ptr<Snake> const &snake, SDL_Point const &food,

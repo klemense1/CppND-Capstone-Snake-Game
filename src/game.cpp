@@ -2,7 +2,7 @@
 #include "SDL.h"
 #include <iostream>
 
-Game::Game(const Settings &settings)
+Game::Game(const param::Settings &settings)
     : _snake(
           std::make_unique<Snake>(settings.kGridWidth, settings.kGridHeight)),
       _food(), _cnt_level(1), _cnt_food(0), _settings(settings),

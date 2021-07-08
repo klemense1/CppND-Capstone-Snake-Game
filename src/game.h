@@ -10,7 +10,7 @@
 
 class Game {
 public:
-  Game(const Settings &settings);
+  Game(const param::Settings &settings);
   void Run(Controller const &controller, Renderer &renderer);
   bool ReachedGameEnding() const;
   int GetScore() const;
@@ -33,7 +33,7 @@ private:
   std::uniform_int_distribution<int> _random_h;
 
   int _score{0};
-  Settings _settings;
+  param::Settings _settings;
 
   void PlaceFood();
   void PlaceFence();

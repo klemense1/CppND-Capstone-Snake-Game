@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 
-Renderer::Renderer(const Settings &settings)
+Renderer::Renderer(const param::Settings &settings)
     : _screen_width(settings.kScreenWidth),
       _screen_height(settings.kScreenHeight), _grid_width(settings.kGridWidth),
       _grid_height(settings.kGridHeight) {
