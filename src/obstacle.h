@@ -9,11 +9,12 @@
 #include <memory>
 #include <vector>
 
+class Renderer;
 class Obstacle {
 public:
   virtual bool CollidesWithSnake(const Snake &snake) const = 0;
   virtual bool Update() = 0;
-  virtual void Render(SDL_Renderer *_sdl_renderer, SDL_Rect &block) const = 0;
+  virtual void Render(Renderer *renderer) const = 0;
 };
 
 class Fence : public Obstacle {
@@ -22,7 +23,7 @@ public:
   bool CollidesWithSnakeHead(const Snake &snake) const;
   bool CollidesWithSnake(const Snake &snake) const;
   bool Update() { return true; };
-  void Render(SDL_Renderer *_sdl_renderer, SDL_Rect &block) const;
+  void Render(Renderer *renderer) const;
 
 private:
   // TODO: maybe move pts to base class

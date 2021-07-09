@@ -9,11 +9,13 @@
 #include <memory>
 #include <vector>
 
+class Renderer;
+
 class Food {
 public:
   virtual bool CollidesWithSnakeHead(const Snake &snake) const = 0;
   virtual bool Update() = 0;
-  virtual void Render(SDL_Renderer *_sdl_renderer, SDL_Rect &sdl_block) = 0;
+  virtual void Render(Renderer *renderer) = 0;
 
 private:
 };
@@ -25,7 +27,7 @@ public:
   bool CollidesWithSnakeHead(const Snake &snake) const;
   bool CollidesWithSnake(const Snake &snake) const;
   bool Update() { return true; };
-  void Render(SDL_Renderer *_sdl_renderer, SDL_Rect &sdl_block);
+  void Render(Renderer *renderer);
 
 private:
   geometry::Point2dInt _pt;

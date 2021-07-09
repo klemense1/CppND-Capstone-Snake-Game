@@ -22,7 +22,7 @@ public:
                          int food_per_level, int fps);
 
 private:
-  SDL_Window *_sdl_window; // TODO: why does renderer not own those ?
+  SDL_Window *_sdl_window; // TODO: let renderer not own those ?
   SDL_Renderer *_sdl_renderer;
   SDL_Rect _block;
 

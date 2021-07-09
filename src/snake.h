@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 
+class Renderer;
 class Snake {
 public:
   enum class Direction { kUp, kDown, kLeft, kRight };
@@ -20,6 +21,8 @@ public:
   void GrowBody();
   bool CollidingWithSnake(int x, int y) const;
   bool CollidingWithHead(int x, int y) const;
+
+  void Render(Renderer *renderer) const;
 
   Direction direction = Direction::kUp;
 

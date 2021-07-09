@@ -1,4 +1,5 @@
 #include "obstacle.h"
+#include "renderer.h"
 
 using geometry::Point2dInt;
 using param::Settings;
@@ -30,12 +31,9 @@ Fence::Fence(RandomGenerator &generator, const Settings &settings)
   }
 }
 
-void Fence::Render(SDL_Renderer *_sdl_renderer, SDL_Rect &block) const {
-  SDL_SetRenderDrawColor(_sdl_renderer, 0xFF, 0xA0, 0xA0, 0xFF);
+void Fence::Render(Renderer *renderer) const {
   for (Point2dInt const &pt : _pts) {
-    block.x = pt.x * block.w;
-    block.y = pt.y * block.h;
-    SDL_RenderFillRect(_sdl_renderer, &block);
+    renderer->DrawRectangle(pt, 0xFF, 0xA0, 0xA0, 0xFF);
   }
 }
 

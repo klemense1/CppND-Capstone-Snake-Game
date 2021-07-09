@@ -1,4 +1,5 @@
 #include "food.h"
+#include "renderer.h"
 #include <iostream>
 
 Apple::Apple(RandomGenerator &generator, const Snake &snake,
@@ -16,12 +17,9 @@ Apple::Apple(RandomGenerator &generator, const Snake &snake,
   }
 }
 
-void Apple::Render(SDL_Renderer *_sdl_renderer, SDL_Rect &block) {
-  if (_sdl_renderer) {
-    SDL_SetRenderDrawColor(_sdl_renderer, 0xFF, 0xCC, 0x00, 0xFF);
-    block.x = _pt.x * block.w;
-    block.y = _pt.y * block.h;
-    SDL_RenderFillRect(_sdl_renderer, &block);
+void Apple::Render(Renderer *renderer) {
+  if (renderer) {
+    renderer->DrawRectangle(_pt, 0xFF, 0xCC, 0x00, 0xFF);
   }
 };
 

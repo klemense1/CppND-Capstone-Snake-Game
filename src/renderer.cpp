@@ -43,47 +43,27 @@ Renderer::~Renderer() {
 
 void Renderer::Render(Snake const &snake, std::shared_ptr<Food> const &food,
                       std::vector<std::shared_ptr<Obstacle>> const &obstacles) {
-  SDL_Rect block;
-  block.w = _screen_width / _grid_width;
-  block.h = _screen_height / _grid_height;
-
   // Clear screen
   SDL_SetRenderDrawColor(_sdl_renderer, 0x1E, 0x1E, 0x1E, 0xFF);
   SDL_RenderClear(_sdl_renderer);
 
   // Render food
-  food->Render(_sdl_renderer, block);
+  food->Render(this);
 
   // Render fence
   for (const auto &obstacle : obstacles) {
-    obstacle->Render(_sdl_renderer, block);
+    obstacle->Render(this);
   }
 
-  // Render snake's body
-  SDL_SetRenderDrawColor(_sdl_renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-  for (Point2dInt const &point : snake._body) {
-    block.x = point.x * block.w;
-    block.y = point.y * block.h;
-    SDL_RenderFillRect(_sdl_renderer, &block);
-  }
-
-  // Render snake's head
-  block.x = static_cast<int>(snake._head_x) * block.w;
-  block.y = static_cast<int>(snake._head_y) * block.h;
-  if (snake._alive) {
-    SDL_SetRenderDrawColor(_sdl_renderer, 0x00, 0x7A, 0xCC, 0xFF);
-  } else {
-    SDL_SetRenderDrawColor(_sdl_renderer, 0xFF, 0x00, 0x00, 0xFF);
-  }
-  SDL_RenderFillRect(_sdl_renderer, &block);
+  snake.Render(this);
 
   // Update Screen
   SDL_RenderPresent(_sdl_renderer);
 }
 
-// TODO: use this in fence and food
 void Renderer::DrawRectangle(geometry::Point2dInt point, Uint8 r, Uint8 g,
                              Uint8 b, Uint8 a) {
+  SDL_SetRenderDrawColor(_sdl_renderer, r, g, b, a);
   SDL_Rect block;
   block.w = _screen_width / _grid_width;
   block.h = _screen_height / _grid_height;

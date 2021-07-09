@@ -1,4 +1,5 @@
 #include "snake.h"
+#include "renderer.h"
 #include <cmath>
 #include <iostream>
 
@@ -67,6 +68,22 @@ void Snake::UpdateBody(Point2dInt &current_head_cell,
 }
 
 void Snake::GrowBody() { _growing = true; }
+
+void Snake::Render(Renderer *renderer) const {
+  if (renderer) {
+    // Render snake's body
+    for (auto const &pt : _body) {
+      renderer->DrawRectangle(pt, 0xFF, 0xFF, 0xFF, 0xFF);
+    }
+    // Render snake's head
+    Point2dInt pt = Point2dInt(_head_x, _head_y);
+    if (_alive) {
+      renderer->DrawRectangle(pt, 0x00, 0x7A, 0xCC, 0xFF);
+    } else {
+      renderer->DrawRectangle(pt, 0xFF, 0x00, 0x00, 0xFF);
+    }
+  }
+};
 
 // Inefficient method to check if cell is occupied by snake.
 bool Snake::CollidingWithSnake(int x, int y) const {
