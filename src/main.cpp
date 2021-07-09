@@ -1,7 +1,7 @@
 #include "controller.h"
 #include "game.h"
-#include "renderer.h"
 #include "param.h"
+#include "renderer.h"
 #include <iostream>
 #include <memory>
 
@@ -13,8 +13,8 @@ int main() {
   settings.kScreenHeight = 640;
   settings.kGridWidth = 32 * 2;
   settings.kGridHeight = 32;
-  settings.maxLevels = 10;
-  settings.foodPerLevel = 10;
+  settings.maxLevels = 2;
+  settings.foodPerLevel = 2;
 
   std::unique_ptr<Renderer> renderer = std::make_unique<Renderer>(settings);
   std::unique_ptr<Controller> controller = std::make_unique<Controller>();

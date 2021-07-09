@@ -69,14 +69,29 @@ void Snake::UpdateBody(Point2dInt &current_head_cell,
 void Snake::GrowBody() { _growing = true; }
 
 // Inefficient method to check if cell is occupied by snake.
-bool Snake::SnakeCell(int x, int y) {
-  if (x == static_cast<int>(_head_x) && y == static_cast<int>(_head_y)) {
+bool Snake::CollidingWithSnake(int x, int y) const {
+  if (CollidingWithHead(x, y)) {
+    std::cout << "Colliding with head\n";
     return true;
   }
   for (auto const &item : _body) {
     if (x == item.x && y == item.y) {
+      std::cout << "Colliding with body\n";
       return true;
     }
   }
   return false;
+}
+
+bool Snake::CollidingWithHead(int x, int y) const {
+  if (x == static_cast<int>(_head_x) && y == static_cast<int>(_head_y)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+std::ostream &operator<<(std::ostream &os, const Snake &snake) {
+  os << "Snake with body length " << snake._body.size() << " and head at ("
+     << snake._head_x << ", " << snake._head_y << ")";
 }

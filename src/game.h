@@ -2,17 +2,20 @@
 #define GAME_H
 
 #include "controller.h"
+#include "food.h"
 #include "geometry.h"
+#include "obstacle.h"
 #include "renderer.h"
 #include "snake.h"
 #include <memory>
-#include <random>
 
 class Game {
 public:
   Game(const param::Settings &settings);
   void Run(Controller const &controller, Renderer &renderer);
   bool ReachedGameEnding() const;
+
+  // TODO: do I need all of these getters?
   int GetScore() const;
   int GetSnakeSize() const;
   int GetCntLevel() const;
@@ -22,25 +25,20 @@ public:
 
 private:
   std::unique_ptr<Snake> _snake;
+  std::shared_ptr<Food> _food;
+  std::vector<std::shared_ptr<Obstacle>> _obstacles;
+
   int _cnt_level;
-  geometry::Point2dInt _food;
-
   int _cnt_food;
-  std::vector<geometry::Point2dInt> _fence;
 
-  std::random_device _dev;
-  std::mt19937 _engine;
-  std::uniform_int_distribution<int> _random_w;
-  std::uniform_int_distribution<int> _random_h;
+  RandomGenerator _random_generator;
 
-  int _score{0};
+  int _score{0}; // TODO: move to initializer list
   param::Settings _settings;
 
-  void PlaceFood();
-  void PlaceFence();
-  bool CollidingWithFence();
+  void InitializeLevel();
   void Update();
-  friend std::ostream & operator<<(std::ostream &os, const Game& g);
+  friend std::ostream &operator<<(std::ostream &os, const Game &g);
 };
 
 #endif

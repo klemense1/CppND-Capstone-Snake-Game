@@ -2,6 +2,7 @@
 #define SNAKE_H
 
 #include "geometry.h"
+#include <iostream>
 #include <vector>
 
 class Snake {
@@ -17,14 +18,15 @@ public:
   void Update();
 
   void GrowBody();
-  bool SnakeCell(int x, int y);
+  bool CollidingWithSnake(int x, int y) const;
+  bool CollidingWithHead(int x, int y) const;
 
   Direction direction = Direction::kUp;
 
   float _speed{0.1f};
   int _size{1};
   bool _alive{true};
-  float _head_x;
+  float _head_x; // TODO: let head be first point in body?
   float _head_y;
   std::vector<geometry::Point2dInt> _body;
 
@@ -36,6 +38,7 @@ private:
   bool _growing{false};
   int _grid_width;
   int _grid_height;
+  friend std::ostream &operator<<(std::ostream &os, const Snake &snake);
 };
 
 #endif
