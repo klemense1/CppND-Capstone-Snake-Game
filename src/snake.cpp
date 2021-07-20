@@ -6,14 +6,11 @@
 using geometry::Point2dInt;
 
 void Snake::Update() {
-  Point2dInt prev_cell{
-      static_cast<int>(_head_x),
-      static_cast<int>(
-          _head_y)}; // We first capture the head's cell before updating.
+  // We first capture the head's cell before updating.
+  Point2dInt prev_cell{static_cast<int>(_head.x), static_cast<int>(_head.y)};
   UpdateHead();
-  Point2dInt current_cell{
-      static_cast<int>(_head_x),
-      static_cast<int>(_head_y)}; // Capture the head's cell after updating.
+  // Capture the head's cell after updating.
+  Point2dInt current_cell{static_cast<int>(_head.x), static_cast<int>(_head.y)};
 
   // Update all of the body vector items if the snake head has moved to a new
   // cell.
@@ -25,25 +22,25 @@ void Snake::Update() {
 void Snake::UpdateHead() {
   switch (direction) {
   case Direction::kUp:
-    _head_y -= _speed;
+    _head.y -= _speed;
     break;
 
   case Direction::kDown:
-    _head_y += _speed;
+    _head.y += _speed;
     break;
 
   case Direction::kLeft:
-    _head_x -= _speed;
+    _head.x -= _speed;
     break;
 
   case Direction::kRight:
-    _head_x += _speed;
+    _head.x += _speed;
     break;
   }
 
   // Wrap the Snake around to the beginning if going off of the screen.
-  _head_x = fmod(_head_x + _grid_width, _grid_width);
-  _head_y = fmod(_head_y + _grid_height, _grid_height);
+  _head.x = fmod(_head.x + _grid_size.x, _grid_size.x);
+  _head.y = fmod(_head.y + _grid_size.y, _grid_size.y);
 }
 
 void Snake::UpdateBody(Point2dInt &current_head_cell,
@@ -76,7 +73,7 @@ void Snake::Render(Renderer *renderer) const {
       renderer->DrawRectangle(pt, 0xFF, 0xFF, 0xFF, 0xFF);
     }
     // Render snake's head
-    Point2dInt pt = Point2dInt(_head_x, _head_y);
+    Point2dInt pt = Point2dInt(_head.x, _head.y);
     if (_alive) {
       renderer->DrawRectangle(pt, 0x00, 0x7A, 0xCC, 0xFF);
     } else {
@@ -101,7 +98,7 @@ bool Snake::CollidingWithSnake(int x, int y) const {
 }
 
 bool Snake::CollidingWithHead(int x, int y) const {
-  if (x == static_cast<int>(_head_x) && y == static_cast<int>(_head_y)) {
+  if (x == static_cast<int>(_head.x) && y == static_cast<int>(_head.y)) {
     return true;
   } else {
     return false;
@@ -110,5 +107,5 @@ bool Snake::CollidingWithHead(int x, int y) const {
 
 std::ostream &operator<<(std::ostream &os, const Snake &snake) {
   os << "Snake with body length " << snake._body.size() << " and head at ("
-     << snake._head_x << ", " << snake._head_y << ")";
+     << snake._head << ")";
 }
