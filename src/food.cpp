@@ -2,13 +2,13 @@
 #include "renderer.h"
 #include <iostream>
 
-Apple::Apple(RandomGenerator &generator, const Snake &snake,
-             const param::Settings &settings)
+Apple::Apple(const Snake &snake, const param::Settings &settings)
     : _random_w(0, static_cast<int>(settings.kGridWidth - 1)),
       _random_h(0, static_cast<int>(settings.kGridHeight - 1)) {
   while (true) {
-    _pt.x = _random_w(generator._engine);
-    _pt.y = _random_h(generator._engine);
+    _pt.x = _random_w();
+    _pt.y = _random_h();
+      std::cout << "GenerateApple x=" << _pt.x << ", y=" << _pt.y << "\n";
     // Check that the location is not occupied by a snake item before
     // placing food.
     if (!CollidesWithSnake(snake)) {

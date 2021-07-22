@@ -20,7 +20,7 @@ void Snake::Update() {
 }
 
 void Snake::UpdateHead() {
-  switch (direction) {
+  switch (_direction) {
   case Direction::kUp:
     _head.y -= _speed;
     break;
@@ -43,8 +43,8 @@ void Snake::UpdateHead() {
   _head.y = fmod(_head.y + _grid_size.y, _grid_size.y);
 }
 
-void Snake::UpdateBody(Point2dInt &current_head_cell,
-                       Point2dInt &prev_head_cell) {
+void Snake::UpdateBody(const Point2dInt &current_head_cell,
+                       const Point2dInt &prev_head_cell) {
   // Add previous head location to vector
   _body.push_back(prev_head_cell);
 
@@ -65,6 +65,10 @@ void Snake::UpdateBody(Point2dInt &current_head_cell,
 }
 
 void Snake::GrowBody() { _growing = true; }
+
+bool Snake::Alive() const { return _alive; }
+
+int Snake::Size() const { return _size; }
 
 void Snake::Render(Renderer *renderer) const {
   if (renderer) {

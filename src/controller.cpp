@@ -3,49 +3,53 @@
 #include "snake.h"
 #include <iostream>
 
-void Controller::ChangeDirection(Snake *snake, Snake::Direction input,
-                                 Snake::Direction opposite) const {
-  if (snake->direction != opposite || snake->_size == 1)
-    snake->direction = input;
+Controller::OIMap Controller::_oppositeInputMapping = {
+    {Snake::Direction::kUp, Snake::Direction::kDown},
+    {Snake::Direction::kDown, Snake::Direction::kUp},
+    {Snake::Direction::kLeft, Snake::Direction::kRight},
+    {Snake::Direction::kRight, Snake::Direction::kLeft}};
+
+void Controller::ChangeDirection(Snake *snake, Snake::Direction input) const {
+  if (snake->_direction != _oppositeInputMapping[snake->_direction] ||
+      snake->Size() == 1)
+    snake->_direction = input;
   return;
 }
 
-void Controller::HandleInput(Snake::GameState &state, Snake *snake) const {
+void Controller::HandleInput(GameState &state, Snake *snake) const {
   SDL_Event e;
   while (SDL_PollEvent(&e)) {
     if (e.type == SDL_QUIT) {
-      state = Snake::GameState::end;
+      state = GameState::ending;
     } else if (e.type == SDL_KEYDOWN) {
       switch (e.key.keysym.sym) {
       case SDLK_ESCAPE:
-        state = Snake::GameState::end;
+        state = GameState::ending;
         break;
       case SDLK_SPACE:
-        if (state == Snake::GameState::pause)
-          state = Snake::GameState::run;
+        if (state == GameState::paused)
+          state = GameState::running;
         else
-          state = Snake::GameState::pause;
+          state = GameState::paused;
         break;
       case SDLK_UP:
-        ChangeDirection(snake, Snake::Direction::kUp, Snake::Direction::kDown);
-        state = Snake::GameState::run;
+        ChangeDirection(snake, Snake::Direction::kUp);
+        state = GameState::running;
         break;
 
       case SDLK_DOWN:
-        ChangeDirection(snake, Snake::Direction::kDown, Snake::Direction::kUp);
-        state = Snake::GameState::run;
+        ChangeDirection(snake, Snake::Direction::kDown);
+        state = GameState::running;
         break;
 
       case SDLK_LEFT:
-        ChangeDirection(snake, Snake::Direction::kLeft,
-                        Snake::Direction::kRight);
-        state = Snake::GameState::run;
+        ChangeDirection(snake, Snake::Direction::kLeft);
+        state = GameState::running;
         break;
 
       case SDLK_RIGHT:
-        ChangeDirection(snake, Snake::Direction::kRight,
-                        Snake::Direction::kLeft);
-        state = Snake::GameState::run;
+        ChangeDirection(snake, Snake::Direction::kRight);
+        state = GameState::running;
         break;
       }
     }

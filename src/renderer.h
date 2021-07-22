@@ -17,7 +17,8 @@ public:
 
   void Render(Snake const &snake, std::shared_ptr<Food> const &food,
               std::vector<std::shared_ptr<Obstacle>> const &obstacles);
-  void DrawRectangle(geometry::Point2dInt, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+  void DrawRectangle(const geometry::Point2dInt, Uint8 r, Uint8 g, Uint8 b,
+                     Uint8 a);
   void UpdateWindowTitle(int score, int cnt_level, int max_levels, int cnt_food,
                          int food_per_level, int fps);
 

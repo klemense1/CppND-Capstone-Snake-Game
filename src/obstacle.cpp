@@ -4,22 +4,31 @@
 using geometry::Point2dInt;
 using param::Settings;
 
-Fence::Fence(RandomGenerator &generator, const Settings &settings)
+Fence::Fence(const Settings &settings)
     : _pts(), _random_w(0, static_cast<int>(settings.kGridWidth - 1)),
       _random_h(0, static_cast<int>(settings.kGridHeight - 1)) {
-  int x0 = _random_w(generator._engine);
-  int y0 = _random_h(generator._engine);
-  int x1, y1;
 
-  // TODO: should become more dificult with each level
+  while (_pts.size() == 0) {
+    GenerateFence();
+  }
+}
+
+void Fence::GenerateFence() {
+  int x0 = _random_w();
+  int y0 = _random_h();
+  std::cout << "GenerateFence x=" << x0 << ", y=" << y0 << "\n";
+  int x1, y1;
+  std::vector<geometry::Point2dInt> pts;
+  // TODO: should become more difficult with each level
   for (int i = 0; i < 2; ++i) {
     if (i % 2 == 0) {
-      x1 = _random_w(generator._engine);
+      x1 = _random_w();
       y1 = y0;
     } else {
       x1 = x0;
-      y1 = _random_h(generator._engine);
+      y1 = _random_h();
     }
+    std::cout << "GenerateFence x=" << x1 << ", y=" << y1 << "\n";
     // Check that the location is not occupied by a snake item before placing
     // food.
     for (int j = 0; j < std::max(x1 - x0, y1 - y0); ++j) {

@@ -61,7 +61,7 @@ void Renderer::Render(Snake const &snake, std::shared_ptr<Food> const &food,
   SDL_RenderPresent(_sdl_renderer);
 }
 
-void Renderer::DrawRectangle(geometry::Point2dInt point, Uint8 r, Uint8 g,
+void Renderer::DrawRectangle(const geometry::Point2dInt point, Uint8 r, Uint8 g,
                              Uint8 b, Uint8 a) {
   SDL_SetRenderDrawColor(_sdl_renderer, r, g, b, a);
   SDL_Rect block;

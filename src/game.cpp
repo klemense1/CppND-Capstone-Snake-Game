@@ -8,7 +8,7 @@ Game::Game(const param::Settings &settings)
     : _snake(
           std::make_unique<Snake>(settings.kGridWidth, settings.kGridHeight)),
       _food(nullptr), _cnt_level(0), _cnt_food(0), _settings(settings),
-      _random_generator() {
+      _score(0) {
   InitializeLevel();
 }
 
@@ -18,14 +18,14 @@ void Game::Run(Controller const &controller, Renderer &renderer) {
   Uint32 frame_end;
   Uint32 frame_duration;
   int frame_count = 0;
-  Snake::GameState state = Snake::GameState::run;
+  GameState state = GameState::running;
 
-  while (state != Snake::GameState::end && _cnt_level <= _settings.maxLevels) {
+  while (state != GameState::ending && _cnt_level <= _settings.maxLevels) {
     frame_start = SDL_GetTicks();
 
     // Input, Update, Render - the main game loop.
     controller.HandleInput(state, _snake.get());
-    if (state == Snake::GameState::run) {
+    if (state == GameState::running) {
 
       Update();
 
@@ -59,15 +59,14 @@ void Game::Run(Controller const &controller, Renderer &renderer) {
 
 void Game::InitializeLevel() {
   _obstacles.clear();
-  _food = std::make_shared<Apple>(_random_generator, *_snake, _settings);
-  _obstacles.emplace_back(
-      std::make_shared<Fence>(_random_generator, _settings));
+  _food = std::make_shared<Apple>(*_snake, _settings);
+  _obstacles.emplace_back(std::make_shared<Fence>(_settings));
   _cnt_level++;
 }
 
 void Game::Update() {
 
-  if (!_snake->_alive)
+  if (!_snake->Alive())
     return;
 
   for (auto &obstacle : _obstacles) {
@@ -89,7 +88,7 @@ void Game::Update() {
         InitializeLevel();
       } else {
         std::cout << "Update Creating Food\n";
-        _food = std::make_shared<Apple>(_random_generator, *_snake, _settings);
+        _food = std::make_shared<Apple>(*_snake, _settings);
       }
       // Grow snake and increase speed.
       _snake->GrowBody();
@@ -101,12 +100,6 @@ void Game::Update() {
 bool Game::ReachedGameEnding() const {
   return (_cnt_level == _settings.maxLevels);
 }
-int Game::GetScore() const { return _score; }
-int Game::GetSnakeSize() const { return _snake->_size; }
-int Game::GetCntLevel() const { return _cnt_level; }
-int Game::GetMaxLevels() const { return _settings.maxLevels; }
-int Game::GetCntFood() const { return _cnt_food; }
-int Game::GetFoodPerLevel() const { return _settings.foodPerLevel; }
 
 std::ostream &operator<<(std::ostream &os, const Game &game) {
   if (game.ReachedGameEnding()) {
@@ -114,7 +107,7 @@ std::ostream &operator<<(std::ostream &os, const Game &game) {
   } else {
     os << "Game has terminated early!\n";
   }
-  os << "Score: " << game.GetScore() << "\nLevel: " << game.GetCntLevel() << "/"
-     << game.GetMaxLevels() << "\nSize: " << game.GetSnakeSize() << "\n";
+  os << "Score: " << game._score << "\nLevel: " << game._cnt_level << "/"
+     << game._settings.maxLevels << "\nSize: " << game._snake->Size() << "\n";
   return os;
 }

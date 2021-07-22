@@ -26,9 +26,9 @@ protected:
   param::Settings settings = SetupTestSettings();
 };
 
-// TEST_F(SnakeGameTest, TestRencererConstructor) {
-//   Renderer renderer = Renderer(settings);
-// }
+TEST_F(SnakeGameTest, TestRencererConstructor) {
+  Renderer renderer = Renderer(settings);
+}
 
 TEST_F(SnakeGameTest, TestControllerConstructor) {
   Controller controller = Controller();
@@ -38,8 +38,9 @@ TEST_F(SnakeGameTest, TestGameConstructor) {
   Game game = Game(settings);
 }
 
-TEST_F(SnakeGameTest, TestRandomGeneratorConstructor) {
-  RandomGenerator random_generator = RandomGenerator();
+TEST_F(SnakeGameTest, TestRandomGenerator) {
+  Rand_Int rnd = Rand_Int(10, 10);
+  EXPECT_EQ(rnd(), 10);
 }
 
 TEST_F(SnakeGameTest, TestSnakeConstructor) {
@@ -47,12 +48,10 @@ TEST_F(SnakeGameTest, TestSnakeConstructor) {
 }
 
 TEST_F(SnakeGameTest, TestAppleConstructor) {
-  RandomGenerator random_generator = RandomGenerator();
   Snake snake = Snake(settings.kGridHeight, settings.kGridWidth);
-  Apple apple = Apple(random_generator, snake, settings);
+  Apple apple = Apple(snake, settings);
 }
 
 TEST_F(SnakeGameTest, TestFenceConstructor) {
-  RandomGenerator random_generator = RandomGenerator();
-  Fence fence = Fence(random_generator, settings);
+  Fence fence = Fence(settings);
 }

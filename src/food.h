@@ -22,8 +22,7 @@ private:
 
 class Apple : public Food {
 public:
-  Apple(RandomGenerator &generator, const Snake &snake,
-        const param::Settings &settings);
+  Apple(const Snake &snake, const param::Settings &settings);
   bool CollidesWithSnakeHead(const Snake &snake) const;
   bool CollidesWithSnake(const Snake &snake) const;
   bool Update() { return true; };
@@ -31,8 +30,8 @@ public:
 
 private:
   geometry::Point2dInt _pt;
-  std::uniform_int_distribution<int> _random_w;
-  std::uniform_int_distribution<int> _random_h;
+  Rand_Int _random_w;
+  Rand_Int _random_h;
 };
 
 #endif

@@ -19,17 +19,18 @@ public:
 
 class Fence : public Obstacle {
 public:
-  Fence(RandomGenerator &generator, const param::Settings &settings);
+  Fence(const param::Settings &settings);
   bool CollidesWithSnakeHead(const Snake &snake) const;
   bool CollidesWithSnake(const Snake &snake) const;
   bool Update() { return true; };
   void Render(Renderer *renderer) const;
 
 private:
+  void GenerateFence();
   // TODO: maybe move pts to base class
   std::vector<geometry::Point2dInt> _pts;
-  std::uniform_int_distribution<int> _random_w;
-  std::uniform_int_distribution<int> _random_h;
+  Rand_Int _random_w;
+  Rand_Int _random_h;
 };
 
 // class BouncingBall : public Obstacle {

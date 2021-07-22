@@ -2,14 +2,18 @@
 #define CONTROLLER_H
 
 #include "snake.h"
+#include <map>
 
+enum class GameState { running, ending, paused };
 class Controller {
 public:
-  void HandleInput(Snake::GameState &state, Snake *snake) const;
+  void HandleInput(GameState &state, Snake *snake) const;
 
 private:
-  void ChangeDirection(Snake *snake, Snake::Direction input,
-                       Snake::Direction opposite) const;
+  void ChangeDirection(Snake *snake, Snake::Direction input) const;
+
+  typedef std::map<Snake::Direction, Snake::Direction> OIMap;
+  static OIMap _oppositeInputMapping;
 };
 
 #endif
