@@ -5,11 +5,35 @@ using geometry::Point2dInt;
 using param::Settings;
 
 Fence::Fence(const Settings &settings)
-    : _pts(), _random_w(0, static_cast<int>(settings.kGridWidth - 1)),
+    : _random_w(0, static_cast<int>(settings.kGridWidth - 1)),
       _random_h(0, static_cast<int>(settings.kGridHeight - 1)) {
 
   while (_pts.size() == 0) {
     GenerateFence();
+  }
+}
+
+bool Fence::CollidesWithSnakeHead(const Snake &snake) const {
+  for (auto &pt : _pts) {
+    if (snake.CollidingWithHead(pt.x, pt.y))
+      return true;
+  }
+  return false;
+}
+
+bool Fence::CollidesWithSnake(const Snake &snake) const {
+  for (auto &pt : _pts) {
+    if (snake.CollidingWithSnake(pt.x, pt.y))
+      return true;
+  }
+  return false;
+}
+
+bool Fence::Update() { return true; }
+
+void Fence::Render(Renderer *renderer) const {
+  for (Point2dInt const &pt : _pts) {
+    renderer->DrawRectangle(pt, 0xFF, 0xA0, 0xA0, 0xFF);
   }
 }
 
@@ -38,26 +62,4 @@ void Fence::GenerateFence() {
       _pts.push_back(pt);
     }
   }
-}
-
-void Fence::Render(Renderer *renderer) const {
-  for (Point2dInt const &pt : _pts) {
-    renderer->DrawRectangle(pt, 0xFF, 0xA0, 0xA0, 0xFF);
-  }
-}
-
-bool Fence::CollidesWithSnakeHead(const Snake &snake) const {
-  for (auto &pt : _pts) {
-    if (snake.CollidingWithHead(pt.x, pt.y))
-      return true;
-  }
-  return false;
-}
-
-bool Fence::CollidesWithSnake(const Snake &snake) const {
-  for (auto &pt : _pts) {
-    if (snake.CollidingWithSnake(pt.x, pt.y))
-      return true;
-  }
-  return false;
 }
