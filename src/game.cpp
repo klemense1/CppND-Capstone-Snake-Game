@@ -1,14 +1,14 @@
 #include "game.h"
 #include "SDL.h"
+#include "obstacle/ball.h"
+#include "obstacle/fence.h"
 #include <iostream>
 
 using geometry::Point2dInt;
 
 Game::Game(const param::Settings &settings)
-    : _snake(
-          std::make_unique<Snake>(settings.kGridWidth, settings.kGridHeight)),
-      _food(nullptr), _cnt_level(0), _cnt_food(0), _settings(settings),
-      _score(0) {
+    : _snake(std::make_unique<Snake>(settings)), _food(nullptr), _cnt_level(0),
+      _cnt_food(0), _settings(settings), _score(0) {
   InitializeLevel();
 }
 
@@ -61,6 +61,8 @@ void Game::InitializeLevel() {
   _obstacles.clear();
   _food = std::make_shared<Apple>(*_snake, _settings);
   _obstacles.emplace_back(std::make_shared<Fence>(_settings));
+  _obstacles.emplace_back(std::make_shared<Ball>(*_snake, _settings));
+
   _cnt_level++;
 }
 
@@ -74,6 +76,7 @@ void Game::Update() {
       std::cout << "Obstacle collides with snake ... ending game\n";
       return;
     }
+    obstacle->Update();
   }
 
   _snake->Update();

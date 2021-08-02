@@ -2,7 +2,8 @@
 #include "../src/game.h"
 // #include "../src/renderer.h"
 #include "../src/food.h"
-#include "../src/obstacle.h"
+#include "../src/obstacle/obstacle.h"
+#include "../src/obstacle/fence.h"
 #include "../src/param.h"
 #include "../src/random_generator.h"
 #include "../src/snake.h"
@@ -44,11 +45,11 @@ TEST_F(SnakeGameTest, TestRandomGenerator) {
 }
 
 TEST_F(SnakeGameTest, TestSnakeConstructor) {
-  Snake snake = Snake(settings.kGridHeight, settings.kGridWidth);
+  Snake snake = Snake(settings);
 }
 
 TEST_F(SnakeGameTest, TestAppleConstructor) {
-  Snake snake = Snake(settings.kGridHeight, settings.kGridWidth);
+  Snake snake = Snake(settings);
   Apple apple = Apple(snake, settings);
 }
 

@@ -2,6 +2,7 @@
 #define SNAKE_H
 
 #include "geometry.h"
+#include "param.h"
 #include <iostream>
 #include <vector>
 
@@ -10,10 +11,10 @@ class Snake {
 public:
   enum class Direction { kUp, kDown, kLeft, kRight };
 
-  Snake(int grid_width, int grid_height)
+  Snake(const param::Settings &settings)
       : _direction(Direction::kUp), _speed(0.1f), _size(1), _alive(true),
-        _growing(false), _grid_size(grid_width, grid_height),
-        _head(grid_width / 2, grid_height / 2) {}
+        _growing(false), _grid_size(settings.kGridWidth, settings.kGridHeight),
+        _head(settings.kGridWidth / 2, settings.kGridHeight / 2) {}
 
   void Update();
 

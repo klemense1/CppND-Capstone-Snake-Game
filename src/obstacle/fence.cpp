@@ -1,4 +1,4 @@
-#include "obstacle.h"
+#include "obstacle/fence.h"
 #include "renderer.h"
 
 using geometry::Point2dInt;
@@ -13,27 +13,11 @@ Fence::Fence(const Settings &settings)
   }
 }
 
-bool Fence::CollidesWithSnakeHead(const Snake &snake) const {
-  for (auto &pt : _pts) {
-    if (snake.CollidingWithHead(pt.x, pt.y))
-      return true;
-  }
-  return false;
-}
-
-bool Fence::CollidesWithSnake(const Snake &snake) const {
-  for (auto &pt : _pts) {
-    if (snake.CollidingWithSnake(pt.x, pt.y))
-      return true;
-  }
-  return false;
-}
-
 bool Fence::Update() { return true; }
 
 void Fence::Render(Renderer *renderer) const {
   for (Point2dInt const &pt : _pts) {
-    renderer->DrawRectangle(pt, 0xFF, 0xA0, 0xA0, 0xFF);
+    renderer->DrawRectangle(pt, 0x8C, 0x8C, 0x5C, 0xFF);
   }
 }
 
@@ -62,4 +46,20 @@ void Fence::GenerateFence() {
       _pts.push_back(pt);
     }
   }
+}
+
+bool Fence::CollidesWithSnakeHead(const Snake &snake) const {
+  for (auto &pt : _pts) {
+    if (snake.CollidingWithHead(pt.x, pt.y))
+      return true;
+  }
+  return false;
+}
+
+bool Fence::CollidesWithSnake(const Snake &snake) const {
+  for (auto &pt : _pts) {
+    if (snake.CollidingWithSnake(pt.x, pt.y))
+      return true;
+  }
+  return false;
 }

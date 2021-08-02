@@ -61,17 +61,6 @@ void Renderer::Render(Snake const &snake, std::shared_ptr<Food> const &food,
   SDL_RenderPresent(_sdl_renderer);
 }
 
-void Renderer::DrawRectangle(const geometry::Point2dInt point, Uint8 r, Uint8 g,
-                             Uint8 b, Uint8 a) {
-  SDL_SetRenderDrawColor(_sdl_renderer, r, g, b, a);
-  SDL_Rect block;
-  block.w = _screen_width / _grid_width;
-  block.h = _screen_height / _grid_height;
-  block.x = point.x * block.w;
-  block.y = point.y * block.h;
-  SDL_RenderFillRect(_sdl_renderer, &block);
-}
-
 void Renderer::UpdateWindowTitle(int score, int cnt_level, int max_levels,
                                  int cnt_food, int food_per_level, int fps) {
   std::string title{

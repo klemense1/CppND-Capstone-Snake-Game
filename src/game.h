@@ -4,7 +4,7 @@
 #include "controller.h"
 #include "food.h"
 #include "geometry.h"
-#include "obstacle.h"
+#include "obstacle/obstacle.h"
 #include "renderer.h"
 #include "snake.h"
 #include <memory>
