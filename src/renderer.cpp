@@ -1,7 +1,9 @@
 #include "renderer.h"
+#include "snake.h"
 #include <iostream>
 #include <string>
 
+using geometry::Point2d;
 using geometry::Point2dInt;
 
 Renderer::Renderer(const param::Settings &settings)
@@ -70,3 +72,21 @@ void Renderer::UpdateWindowTitle(int score, int cnt_level, int max_levels,
       std::to_string(food_per_level) + " FPS: " + std::to_string(fps)};
   SDL_SetWindowTitle(_sdl_window, title.c_str());
 }
+
+template <typename T>
+void Renderer::DrawRectangle(const Point2d<T> &point, const Colour &colour) {
+  SDL_SetRenderDrawColor(_sdl_renderer, colour.red, colour.green, colour.blue,
+                         colour.alpha);
+  SDL_Rect block;
+  block.w = _screen_width / _grid_width;
+  block.h = _screen_height / _grid_height;
+  block.x = static_cast<int>(point.x * block.w);
+  block.y = static_cast<int>(point.y * block.h);
+  SDL_RenderFillRect(_sdl_renderer, &block);
+}
+
+// explicit instantiations to circumvate declaration in header file
+template void Renderer::DrawRectangle<int>(const Point2d<int> &point,
+                                           const Colour &colour);
+template void Renderer::DrawRectangle<float>(const Point2d<float> &point,
+                                             const Colour &colour);

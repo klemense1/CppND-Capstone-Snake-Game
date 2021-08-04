@@ -1,8 +1,20 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
+#include <memory>
+
 class Renderer;
+// class Colour;
 class Snake;
+
+struct Colour {
+  Colour(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha)
+      : red(red), green(green), blue(blue), alpha(alpha) {}
+  uint8_t red;
+  uint8_t green;
+  uint8_t blue;
+  uint8_t alpha;
+};
 
 class Object {
 public:

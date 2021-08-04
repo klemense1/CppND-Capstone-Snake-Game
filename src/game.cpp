@@ -1,5 +1,6 @@
 #include "game.h"
 #include "SDL.h"
+#include "food/apple.h"
 #include "obstacle/ball.h"
 #include "obstacle/fence.h"
 #include <iostream>

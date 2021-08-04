@@ -1,5 +1,4 @@
 #include "obstacle/ball.h"
-#include "renderer.h"
 
 using geometry::Point2dFloat;
 using geometry::Point2dInt;
@@ -8,7 +7,7 @@ using param::Settings;
 Ball::Ball(const Snake &snake, const Settings &settings)
     : _random_w(0, static_cast<int>(settings.kGridHeight - 1)),
       _grid_size(settings.kGridWidth, settings.kGridHeight), _dir_x(0),
-      _dir_y(0), _speed(0.05f) {
+      _dir_y(0), _speed(0.05f), _colour(0x3E, 0xB4, 0x89, 0xFF) {
   GenerateBall(snake);
 }
 
@@ -26,7 +25,7 @@ bool Ball::Update() {
 }
 
 void Ball::Render(Renderer *renderer) const {
-  renderer->DrawRectangle(_pt, 0x3E, 0xB4, 0x89, 0xFF);
+  renderer->DrawRectangle(_pt, _colour);
 }
 
 void Ball::GenerateBall(const Snake &snake) {
@@ -47,9 +46,11 @@ void Ball::GenerateBall(const Snake &snake) {
 }
 
 bool Ball::CollidesWithSnakeHead(const Snake &snake) const {
-  return (snake.CollidingWithHead(_pt.x, _pt.y));
+  auto pt_int = Point2dInt(_pt.x, _pt.y);
+  return (snake.CollidingWithHead(pt_int));
 }
 
 bool Ball::CollidesWithSnake(const Snake &snake) const {
-  return (snake.CollidingWithSnake(_pt.x, _pt.y));
+  auto pt_int = Point2dInt(_pt.x, _pt.y);
+  return (snake.CollidingWithSnake(pt_int));
 }

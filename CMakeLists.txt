@@ -14,7 +14,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 find_package(SDL2 REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS} src)
 
-add_executable(SnakeGame src/main.cpp src/game.cpp src/controller.cpp src/renderer.cpp src/snake.cpp src/food.cpp src/obstacle.cpp src/random_generator.cpp)
+add_executable(SnakeGame src/main.cpp src/game.cpp src/controller.cpp src/renderer.cpp src/snake.cpp src/food/apple.cpp src/obstacle/fence.cpp src/obstacle/ball.cpp src/random_generator.cpp)
 string(STRIP ${SDL2_LIBRARIES} SDL2_LIBRARIES)
 target_link_libraries(SnakeGame ${SDL2_LIBRARIES})
 
@@ -22,6 +22,6 @@ target_link_libraries(SnakeGame ${SDL2_LIBRARIES})
 add_subdirectory(thirdparty/googletest)
 
 # Add the testing executable
-add_executable(test test/utest_game.cpp src/game.cpp src/controller.cpp src/renderer.cpp src/snake.cpp src/food.cpp src/obstacle.cpp src/random_generator.cpp)
+add_executable(test test/utest_game.cpp src/game.cpp src/controller.cpp src/renderer.cpp src/snake.cpp src/food/apple.cpp src/obstacle/fence.cpp src/obstacle/ball.cpp src/random_generator.cpp)
 
 target_link_libraries(test gtest_main ${SDL2_LIBRARIES})

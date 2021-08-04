@@ -1,14 +1,15 @@
 #include "obstacle/fence.h"
-#include "renderer.h"
 
 using geometry::Point2dInt;
 using param::Settings;
 
 Fence::Fence(const Settings &settings)
     : _random_w(0, static_cast<int>(settings.kGridWidth - 1)),
-      _random_h(0, static_cast<int>(settings.kGridHeight - 1)) {
+      _random_h(0, static_cast<int>(settings.kGridHeight - 1)),
+      _colour(0x8C, 0x8C, 0x5C, 0xFF), _num_corners(2) {
 
   while (_pts.size() == 0) {
+    // TODO: make collision check with snake! (and some prediction)
     GenerateFence();
   }
 }
@@ -17,40 +18,56 @@ bool Fence::Update() { return true; }
 
 void Fence::Render(Renderer *renderer) const {
   for (Point2dInt const &pt : _pts) {
-    renderer->DrawRectangle(pt, 0x8C, 0x8C, 0x5C, 0xFF);
+    renderer->DrawRectangle(pt, _colour);
   }
 }
 
 void Fence::GenerateFence() {
   int x0 = _random_w();
   int y0 = _random_h();
-  std::cout << "GenerateFence x=" << x0 << ", y=" << y0 << "\n";
-  int x1, y1;
   std::vector<geometry::Point2dInt> pts;
   // TODO: should become more difficult with each level
-  for (int i = 0; i < 2; ++i) {
+  for (int i = 0; i < _num_corners; ++i) {
+    int x1 = x0;
+    int y1 = y0;
     if (i % 2 == 0) {
       x1 = _random_w();
-      y1 = y0;
+      // y1 = y0;
     } else {
-      x1 = x0;
+      // x1 = x0;
       y1 = _random_h();
     }
-    std::cout << "GenerateFence x=" << x1 << ", y=" << y1 << "\n";
     // Check that the location is not occupied by a snake item before placing
     // food.
-    for (int j = 0; j < std::max(x1 - x0, y1 - y0); ++j) {
-      Point2dInt pt;
-      pt.x = x0 + j / std::max(1, (x1 - x0));
-      pt.y = y0 + j / std::max(1, (y1 - y0));
-      _pts.push_back(pt);
+    auto line = InterpolateLine(x0, x1, y0, y1);
+    for (auto &p : line) {
+      _pts.push_back(p);
     }
+    x0 = x1;
+    y0 = y1;
   }
+}
+
+std::vector<Point2dInt> Fence::InterpolateLine(int x0, int x1, int y0,
+                                               int y1) const {
+  std::vector<Point2dInt> line;
+  int xi = x0;
+  int yi = y0;
+  int diff_x = std::abs(x1 - x0);
+  int diff_y = std::abs(y1 - y0);
+  int length = std::max(diff_x, diff_y);
+  for (int j = 1; j <= length; ++j) {
+    xi = (x1 - x0) == 0 ? x0 : x0 + j * ((x1 - x0) / std::abs(x1 - x0));
+    yi = (y1 - y0) == 0 ? y0 : y0 + j * ((y1 - y0) / std::abs(y1 - y0));
+    Point2dInt pt{xi, yi};
+    line.push_back(pt);
+  }
+  return line;
 }
 
 bool Fence::CollidesWithSnakeHead(const Snake &snake) const {
   for (auto &pt : _pts) {
-    if (snake.CollidingWithHead(pt.x, pt.y))
+    if (snake.CollidingWithHead(pt))
       return true;
   }
   return false;
@@ -58,7 +75,7 @@ bool Fence::CollidesWithSnakeHead(const Snake &snake) const {
 
 bool Fence::CollidesWithSnake(const Snake &snake) const {
   for (auto &pt : _pts) {
-    if (snake.CollidingWithSnake(pt.x, pt.y))
+    if (snake.CollidingWithSnake(pt))
       return true;
   }
   return false;

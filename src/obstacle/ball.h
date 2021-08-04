@@ -5,6 +5,7 @@
 #include "obstacle/obstacle.h"
 #include "param.h"
 #include "random_generator.h"
+#include "renderer.h"
 #include "snake.h"
 
 class Ball : public Obstacle {
@@ -23,6 +24,7 @@ private:
   int _dir_x;
   int _dir_y;
   float _speed;
+  Colour _colour;
 };
 
 #endif

@@ -2,7 +2,7 @@
 #define GAME_H
 
 #include "controller.h"
-#include "food.h"
+#include "food/food.h"
 #include "geometry.h"
 #include "obstacle/obstacle.h"
 #include "renderer.h"

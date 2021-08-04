@@ -1,5 +1,4 @@
 #include "snake.h"
-#include "renderer.h"
 #include <cmath>
 #include <iostream>
 
@@ -58,7 +57,7 @@ void Snake::UpdateBody(const Point2dInt &current_head_cell,
 
   // Check if the snake has died.
   for (auto const &item : _body) {
-    if (current_head_cell.x == item.x && current_head_cell.y == item.y) {
+    if (Collides(current_head_cell, item)) {
       _alive = false;
     }
   }
@@ -74,26 +73,26 @@ void Snake::Render(Renderer *renderer) const {
   if (renderer) {
     // Render snake's body
     for (auto const &pt : _body) {
-      renderer->DrawRectangle(pt, 0xFF, 0xFF, 0xFF, 0xFF);
+      renderer->DrawRectangle(pt, _colour_body);
     }
     // Render snake's head
     Point2dInt pt = Point2dInt(_head.x, _head.y);
     if (_alive) {
-      renderer->DrawRectangle(pt, 0x00, 0x7A, 0xCC, 0xFF);
+      renderer->DrawRectangle(pt, _colour_head_alive);
     } else {
-      renderer->DrawRectangle(pt, 0xFF, 0x00, 0x00, 0xFF);
+      renderer->DrawRectangle(pt, _colour_head_dead);
     }
   }
 };
 
 // Inefficient method to check if cell is occupied by snake.
-bool Snake::CollidingWithSnake(int x, int y) const {
-  if (CollidingWithHead(x, y)) {
+bool Snake::CollidingWithSnake(const Point2dInt &pt) const {
+  if (CollidingWithHead(pt)) {
     std::cout << "Colliding with head\n";
     return true;
   }
   for (auto const &item : _body) {
-    if (x == item.x && y == item.y) {
+    if (Collides(pt, item)) {
       std::cout << "Colliding with body\n";
       return true;
     }
@@ -101,12 +100,8 @@ bool Snake::CollidingWithSnake(int x, int y) const {
   return false;
 }
 
-bool Snake::CollidingWithHead(int x, int y) const {
-  if (x == static_cast<int>(_head.x) && y == static_cast<int>(_head.y)) {
-    return true;
-  } else {
-    return false;
-  }
+bool Snake::CollidingWithHead(const Point2dInt &pt) const {
+  return geometry::Collides(pt, _head);
 }
 
 std::ostream &operator<<(std::ostream &os, const Snake &snake) {
