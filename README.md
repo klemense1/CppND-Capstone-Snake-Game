@@ -1,12 +1,21 @@
 # CPPND: Capstone Snake Game Example
 
-This is a starter repo for the Capstone project in the [Udacity C++ Nanodegree Program](https://www.udacity.com/course/c-plus-plus-nanodegree--nd213). The code for this repo was inspired by [this](https://codereview.stackexchange.com/questions/212296/snake-game-in-c-with-sdl) excellent StackOverflow post and set of responses.
+This is the Capstone project in the [Udacity C++ Nanodegree Program](https://www.udacity.com/course/c-plus-plus-nanodegree--nd213). The code for this repo was inspired by [this](https://codereview.stackexchange.com/questions/212296/snake-game-in-c-with-sdl) excellent StackOverflow post and set of responses.
 
 <img src="snake_game.gif"/>
 
-The Capstone Project gives you a chance to integrate what you've learned throughout this program. This project will become an important part of your portfolio to share with current and future colleagues and employers.
+### Game Overview
+This project is a modification of the Snake game.
+The game consists of multiple levels `maxLevels`. Advancing from one level to another requires `foodPerLevel` food to be eaten. The speed of the snake increases with each level. Once the snake collides with itself or an obstacle, the game ends. The game can be paused at any time by pressing the spacebar. The game can be canceled by pressing the escape button.
 
-In this project, you can build your own C++ application or extend this Snake game, following the principles you have learned throughout this Nanodegree Program. This project will demonstrate that you can independently create applications using a wide range of C++ features.
+### Obstacles
+There exist two types of obstacles: `Ball` and `Fence`. A ball is moving at a constant speed, bouncing back at the borders of the game. The fence is a static obstacle, which consists of a line-string with `numCornersFence` corners.
+
+### Food
+`Food` is an abstract class, which can be derived from to create any new food type. Currently, there is only `Apple` implemented. It is created randomly within the playing field.
+
+## Class Diagram
+ ![](class_diagram.png)
 
 ## Dependencies for Running Locally
 * cmake >= 3.7

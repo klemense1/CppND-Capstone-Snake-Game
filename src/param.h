@@ -11,6 +11,7 @@ struct Settings {
   int kGridHeight;
   int maxLevels;
   int foodPerLevel;
+  int numCornersFence;
 };
 } // namespace param
 #endif

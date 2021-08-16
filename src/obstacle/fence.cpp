@@ -3,14 +3,22 @@
 using geometry::Point2dInt;
 using param::Settings;
 
-Fence::Fence(const Settings &settings)
+Fence::Fence(const Snake &snake, const Settings &settings)
     : _random_w(0, static_cast<int>(settings.kGridWidth - 1)),
       _random_h(0, static_cast<int>(settings.kGridHeight - 1)),
-      _colour(0x8C, 0x8C, 0x5C, 0xFF), _num_corners(2) {
+      _colour(0x8C, 0x8C, 0x5C, 0xFF), _num_corners(settings.numCornersFence) {
 
   while (_pts.size() == 0) {
-    // TODO: make collision check with snake! (and some prediction)
     GenerateFence();
+    if (CollidesWithSnake(snake)) {
+      _pts.clear();
+    }
+    // Prediction
+    Snake new_snake = Snake(snake);
+    new_snake.Update();
+    if (CollidesWithSnakeHead(new_snake)) {
+      _pts.clear();
+    }
   }
 }
 
@@ -26,15 +34,12 @@ void Fence::GenerateFence() {
   int x0 = _random_w();
   int y0 = _random_h();
   std::vector<geometry::Point2dInt> pts;
-  // TODO: should become more difficult with each level
   for (int i = 0; i < _num_corners; ++i) {
     int x1 = x0;
     int y1 = y0;
     if (i % 2 == 0) {
       x1 = _random_w();
-      // y1 = y0;
     } else {
-      // x1 = x0;
       y1 = _random_h();
     }
     // Check that the location is not occupied by a snake item before placing

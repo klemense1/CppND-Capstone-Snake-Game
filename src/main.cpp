@@ -13,8 +13,9 @@ int main() {
   settings.kScreenHeight = 640;
   settings.kGridWidth = 32 * 2;
   settings.kGridHeight = 32;
-  settings.maxLevels = 2;
+  settings.maxLevels = 9;
   settings.foodPerLevel = 2;
+  settings.numCornersFence = 2;
 
   std::unique_ptr<Renderer> renderer = std::make_unique<Renderer>(settings);
   std::unique_ptr<Controller> controller = std::make_unique<Controller>();

@@ -61,7 +61,7 @@ void Game::Run(Controller const &controller, Renderer &renderer) {
 void Game::InitializeLevel() {
   _obstacles.clear();
   _food = std::make_shared<Apple>(*_snake, _settings);
-  _obstacles.emplace_back(std::make_shared<Fence>(_settings));
+  _obstacles.emplace_back(std::make_shared<Fence>(*_snake, _settings));
   _obstacles.emplace_back(std::make_shared<Ball>(*_snake, _settings));
 
   _cnt_level++;

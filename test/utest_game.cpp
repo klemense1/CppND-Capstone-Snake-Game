@@ -22,6 +22,7 @@ param::Settings SetupTestSettings() {
   settings.kGridHeight = 32;
   settings.maxLevels = 10;
   settings.foodPerLevel = 10;
+  settings.numCornersFence = 2;
   return settings;
 }
 
@@ -56,7 +57,8 @@ TEST_F(SnakeGameTest, TestAppleConstructor) {
 }
 
 TEST_F(SnakeGameTest, TestFenceConstructor) {
-  Fence fence = Fence(settings);
+  Snake snake = Snake(settings);
+  Fence fence = Fence(snake, settings);
   auto pts = fence.GetPoints();
   for (auto p : pts) {
     EXPECT_LE(p.x, settings.kGridWidth);

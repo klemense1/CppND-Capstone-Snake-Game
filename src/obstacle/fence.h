@@ -11,7 +11,7 @@
 typedef std::vector<geometry::Point2dInt> Line2dInt;
 class Fence : public Obstacle {
 public:
-  Fence(const param::Settings &settings);
+  Fence(const Snake &snake, const param::Settings &settings);
   bool Update() override;
   void Render(Renderer *renderer) const override;
   bool CollidesWithSnakeHead(const Snake &snake) const override;

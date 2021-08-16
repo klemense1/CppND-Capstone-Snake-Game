@@ -28,15 +28,13 @@ public:
   bool CollidingWithSnake(const geometry::Point2dInt &pt) const;
   bool CollidingWithHead(const geometry::Point2dInt &pt) const;
   geometry::Point2dFloat GetHead() const { return _head; };
-
   void Render(Renderer *renderer) const;
 
   Direction _direction;
-
   float _speed;
 
 private:
-  void UpdateHead();
+  geometry::Point2dFloat GetNewHead() const;
   void UpdateBody(const geometry::Point2dInt &current_cell,
                   const geometry::Point2dInt &prev_cell);
   friend std::ostream &operator<<(std::ostream &os, const Snake &snake);

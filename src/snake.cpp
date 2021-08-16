@@ -3,11 +3,13 @@
 #include <iostream>
 
 using geometry::Point2dInt;
+using geometry::Point2dFloat;
 
 void Snake::Update() {
   // We first capture the head's cell before updating.
   Point2dInt prev_cell{static_cast<int>(_head.x), static_cast<int>(_head.y)};
-  UpdateHead();
+  // update head
+  _head = GetNewHead();
   // Capture the head's cell after updating.
   Point2dInt current_cell{static_cast<int>(_head.x), static_cast<int>(_head.y)};
 
@@ -18,28 +20,30 @@ void Snake::Update() {
   }
 }
 
-void Snake::UpdateHead() {
+Point2dFloat Snake::GetNewHead() const {
+  Point2dFloat new_head = _head;
   switch (_direction) {
   case Direction::kUp:
-    _head.y -= _speed;
+    new_head.y -= _speed;
     break;
 
   case Direction::kDown:
-    _head.y += _speed;
+    new_head.y += _speed;
     break;
 
   case Direction::kLeft:
-    _head.x -= _speed;
+    new_head.x -= _speed;
     break;
 
   case Direction::kRight:
-    _head.x += _speed;
+    new_head.x += _speed;
     break;
   }
 
   // Wrap the Snake around to the beginning if going off of the screen.
-  _head.x = fmod(_head.x + _grid_size.x, _grid_size.x);
-  _head.y = fmod(_head.y + _grid_size.y, _grid_size.y);
+  new_head.x = fmod(new_head.x + _grid_size.x, _grid_size.x);
+  new_head.y = fmod(new_head.y + _grid_size.y, _grid_size.y);
+  return new_head;
 }
 
 void Snake::UpdateBody(const Point2dInt &current_head_cell,
