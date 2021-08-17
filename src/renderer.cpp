@@ -21,14 +21,14 @@ Renderer::Renderer(const param::Settings &settings)
                                  SDL_WINDOWPOS_CENTERED, _screen_width,
                                  _screen_height, SDL_WINDOW_SHOWN);
 
-  if (nullptr == _sdl_window) {
+  if (_sdl_window == nullptr) {
     std::cerr << "Window could not be created.\n";
     std::cerr << " SDL_Error: " << SDL_GetError() << "\n";
   }
 
   // Create renderer
   _sdl_renderer = SDL_CreateRenderer(_sdl_window, -1, SDL_RENDERER_ACCELERATED);
-  if (nullptr == _sdl_renderer) {
+  if (_sdl_renderer == nullptr) {
     std::cerr << "Renderer could not be created.\n";
     std::cerr << "SDL_Error: " << SDL_GetError() << "\n";
   }
@@ -37,9 +37,44 @@ Renderer::Renderer(const param::Settings &settings)
   _block.h = _screen_height / _grid_height;
 }
 
+Renderer::Renderer(Renderer &&source)
+    : _screen_width(source._screen_width),
+      _screen_height(source._screen_height), _grid_width(source._grid_width),
+      _grid_height(source._grid_height) {
+  // copy data
+  _sdl_window = source._sdl_window;
+  _sdl_renderer = source._sdl_renderer;
+  // invalidate source
+  source._sdl_window = nullptr;
+  source._sdl_renderer = nullptr;
+}
+
+Renderer &Renderer::operator=(Renderer &&other) {
+  if (this != &other) {
+    // free original data
+    if (_sdl_window != nullptr) {
+      SDL_DestroyWindow(_sdl_window);
+    }
+    if (_sdl_renderer != nullptr) {
+      SDL_DestroyRenderer(_sdl_renderer);
+    }
+    // copy data
+    _sdl_window = other._sdl_window;
+    _sdl_renderer = other._sdl_renderer;
+    // invalidate other
+    other._sdl_window = nullptr;
+    other._sdl_renderer = nullptr;
+  }
+  return *this;
+}
+
 Renderer::~Renderer() {
-  SDL_DestroyWindow(_sdl_window);
-  SDL_DestroyRenderer(_sdl_renderer);
+  if (_sdl_window != nullptr) {
+    SDL_DestroyWindow(_sdl_window);
+  }
+  if (_sdl_renderer != nullptr) {
+    SDL_DestroyRenderer(_sdl_renderer);
+  }
   SDL_Quit();
 }
 

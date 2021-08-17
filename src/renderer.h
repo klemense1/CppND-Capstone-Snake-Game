@@ -13,6 +13,11 @@ class Snake;
 class Renderer {
 public:
   Renderer(const param::Settings &settings);
+  Renderer(Renderer const &renderer) = delete;            // copy constructor
+  Renderer(Renderer &&renderer);                          // move constructor
+  Renderer &operator=(const Renderer &renderer) = delete; // copy assignment
+  Renderer &operator=(Renderer &&renderer);               // move assignment
+
   ~Renderer();
 
   void Render(Snake const &snake, std::shared_ptr<Food> const &food,
@@ -24,8 +29,9 @@ public:
   template <typename T>
   void DrawRectangle(const geometry::Point2d<T> &point, const Colour &colour);
 
-  const SDL_Window* GetSDLWindow() const {return _sdl_window; }
-  const SDL_Renderer* GetSDLRenderer() const {return _sdl_renderer; }
+  const SDL_Window *GetSDLWindow() const { return _sdl_window; }
+  const SDL_Renderer *GetSDLRenderer() const { return _sdl_renderer; }
+
 private:
   SDL_Window *_sdl_window;
   SDL_Renderer *_sdl_renderer;
